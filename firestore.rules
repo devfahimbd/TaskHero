@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Check if the user is authenticated
+    // Firebase Auth UID is automatically available in request.auth.uid
+
+    // Each user's tasks are stored under: /users/{userId}/tasks/{taskId}
+    match /users/{userId}/tasks/{taskId} {
+
+      // Allow read/write only if the authenticated user matches the document owner
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Allow create: User must be authenticated and can only create under their own UID
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.data.title is string
+                    && request.resource.data.title.size() > 0
+                    && request.resource.data.completed is bool;
+
+      // Allow update: Same ownership check
+      allow update: if request.auth != null && request.auth.uid == userId;
+
+      // Allow delete: Same ownership check
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Deny all other paths by default (security best practice)
+    // No other collections should be accessible
+  }
+}
