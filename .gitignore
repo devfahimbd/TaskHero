@@ -11,3 +11,6 @@ google-services.json
 GoogleService-Info.plist
 *.env
 .firebase/
+
+auto_updates/
+auto_commit.py
