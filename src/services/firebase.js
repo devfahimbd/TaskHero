@@ -10,31 +10,26 @@
  */
 
 import { initializeApp } from 'firebase/app';
-import {
-  initializeAuth,
-  getReactNativePersistence,
-} from 'firebase/auth/react-native';
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // TODO: Replace with your Firebase project config
 const firebaseConfig = {
-  apiKey: 'AIzaSyBY5ul4EGOa60Qrhr2xL5ReNRtnh5Xa7HM',
-  authDomain: 'task-hero-f2d01.firebaseapp.com',
-  projectId: 'task-hero-f2d01',
-  storageBucket: 'task-hero-f2d01.firebasestorage.app',
-  messagingSenderId: '360271990389',
-  appId: '1:360271990389:web:1fa951c5d04d1c793bf23c',
+  apiKey: 'YOUR_API_KEY',
+  authDomain: 'YOUR_PROJECT.firebaseapp.com',
+  projectId: 'YOUR_PROJECT_ID',
+  storageBucket: 'YOUR_PROJECT.appspot.com',
+  messagingSenderId: 'YOUR_SENDER_ID',
+  appId: 'YOUR_APP_ID',
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Auth with React Native persistence (AsyncStorage)
-// This keeps the user logged in across app restarts
-const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-});
+// Initialize Auth
+// Using getAuth() which is the standard and most compatible approach
+// for Firebase v11+ with React Native (Expo)
+const auth = getAuth(app);
 
 // Initialize Firestore
 const db = getFirestore(app);
